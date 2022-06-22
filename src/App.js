@@ -1,13 +1,16 @@
 import React from "react";
 import "rsuite/dist/styles/rsuite-default.min.css"
-import { Button } from "rsuite";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import SignIn from "./Pages/SignIn";
+import Home from "./Pages/Home";
 
 const App = () => {
   return (
-    <div>
-      Hello
-      <Button>Click Me</Button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route exact path = "/" element = {<SignIn />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
