@@ -1,16 +1,20 @@
 import React from "react";
-import "rsuite/dist/styles/rsuite-default.min.css"
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Switch } from "react-router";
 import SignIn from "./Pages/SignIn";
+import PrivateRoute from "./My Components/PrivateRoute"
+import "rsuite/dist/styles/rsuite-default.min.css"
 import Home from "./Pages/Home";
+import PublicRoute from "./My Components/PublicRoute";
+
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path = "/" element = {<SignIn />} />
-      </Routes>
-    </BrowserRouter>
+    <Switch>
+      <PublicRoute path = "/signin"><SignIn /></PublicRoute>
+      <PrivateRoute path = "/">
+        <Home />
+      </PrivateRoute>
+    </Switch>
   );
 }
 
