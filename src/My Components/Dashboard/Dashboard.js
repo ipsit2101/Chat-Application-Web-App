@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
-import { Alert, Button, Drawer } from "rsuite";
+import { Alert, Button, Divider, Drawer } from "rsuite";
 import { useProfile } from "../../Context/profileContext";
 import { useOpen } from "../../Misc/CustomHooks";
 import { auth } from "../../Misc/firebase";
+import EditableInput from "../EditableInput";
 
 const Dashboard = () => {
 
@@ -15,6 +16,10 @@ const Dashboard = () => {
 
     close();
   }, [close]);
+
+  const onSaveInput = async (newData) => {
+    console.log(newData);
+  }
     
   return (
     <>
@@ -26,6 +31,13 @@ const Dashboard = () => {
 
       <Drawer.Body>
         <h3>Hey {profile.name}</h3>
+        <Divider />
+        <EditableInput 
+          name = "nickname"
+          initialVal = {profile.name}
+          onSave = { onSaveInput }
+          label = { <h6 className="mb-2">Nickname</h6> }
+        />
       </Drawer.Body>
      
       <Drawer.Footer>
