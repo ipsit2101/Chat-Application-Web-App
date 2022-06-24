@@ -4,6 +4,7 @@ import { useProfile } from "../../Context/profileContext";
 import { useOpen } from "../../Misc/CustomHooks";
 import { auth, database } from "../../Misc/firebase";
 import EditableInput from "../EditableInput";
+import AuthProviderInfo from "./AuthProviderInfo";
 
 const Dashboard = () => {
 
@@ -37,6 +38,7 @@ const Dashboard = () => {
 
       <Drawer.Body>
         <h3>Hey {profile.name}</h3>
+        <AuthProviderInfo />
         <Divider />
         <EditableInput 
           name = "nickname"
