@@ -44,10 +44,10 @@ const SignIn = () => {
               </div>
               <div className="mt-3">
                 <Button block color="blue" onClick={FacebookSignIn}>
-                  <Icon icon="facebook" /> Sign In with Facebook
+                  <Icon icon="facebook" />  Sign In with Facebook
                 </Button>
                 <Button block color="red" onClick={GoogleSignIn}>
-                  <Icon icon="google" /> Sign In with Google
+                  <Icon icon="google" />  Sign In with Google
                 </Button>
               </div>
             </Panel>
