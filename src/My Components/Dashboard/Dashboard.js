@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Alert, Button, Divider, Drawer } from "rsuite";
 import { useProfile } from "../../Context/profileContext";
 import { useOpen } from "../../Misc/CustomHooks";
-import { auth } from "../../Misc/firebase";
+import { auth, database } from "../../Misc/firebase";
 import EditableInput from "../EditableInput";
 
 const Dashboard = () => {
@@ -16,9 +16,15 @@ const Dashboard = () => {
 
     close();
   }, [close]);
-
-  const onSaveInput = async (newData) => {
-    console.log(newData);
+       
+  const onSaveInput = async (newName) => {           // to save the user's new nickname in the database
+    const newNickName = database.ref(`/profiles/${profile.uid}`).child('name');
+    try {
+      await newNickName.set(newName);
+      Alert.success('Nickname has been changed', 4000);
+    } catch (error) {
+      Alert.error(error.message, 4000);
+    }
   }
     
   return (

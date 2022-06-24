@@ -7,8 +7,9 @@ export const ProfileProvider = ( {children} ) => {
     const [profile, setProfile] = useState(null);
     const [isLoading, setIsLoading] = useState(true);  // for setting the loading spinner
 
-    useEffect(() => {     
-        let userRef;       
+    useEffect(() => {    
+        let userRef;    
+        
         const authUnsubscribe = auth.onAuthStateChanged(authObject => {
             // authObject has the data of user who are currently signed in
 
