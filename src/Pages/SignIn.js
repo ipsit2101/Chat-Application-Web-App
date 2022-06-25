@@ -9,11 +9,13 @@ const SignIn = () => {
     try {
       const { additionalUserInfo, user } = await auth.signInWithPopup(provider);
       console.log(additionalUserInfo);
+      console.log(user);
 
       if (additionalUserInfo.isNewUser) {
         await database.ref(`/profiles/${user.uid}`).set({       //set method writes the user infornmation to the database location
           name: user.displayName,
           createdAt: firebase.database.ServerValue.TIMESTAMP,
+          avatar: 'user'
         })
       }
       

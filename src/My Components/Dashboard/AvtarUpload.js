@@ -4,6 +4,7 @@ import { useOpen } from '../../Misc/CustomHooks';
 import AvatarEditor from "react-avatar-editor";
 import { database, storage } from '../../Misc/firebase';
 import { useProfile } from '../../Context/profileContext';
+import ProfileAvatar from './ProfileAvatar';
 
 const AvtarUpload = () => {
   const acceptedFileType = ".png, .jpg, .jpeg";    
@@ -59,11 +60,10 @@ const AvtarUpload = () => {
       });
 
       const downloadUrl = (await uploadResult).ref.getDownloadURL();
-      const userAvatarResult = database.ref(`/profiles/${profile.uid}`).child('Avatar');
+      const userAvatarResult = database.ref(`/profiles/${profile.uid}`).child('avatar');
 
-      userAvatarResult.set(downloadUrl);
-      console.log(downloadUrl);
-
+      await userAvatarResult.set(downloadUrl);
+      
       setIsLoad(false);
       Alert.success(`Avatar has been changed`, 4000);
 
@@ -75,6 +75,7 @@ const AvtarUpload = () => {
 
   return (
     <div className='mt-3 text-center'>
+      <ProfileAvatar name = {profile.name} src = {profile.avatar} />
       <label htmlFor='avatar' className='d-block cursor-pointer padded'>
         Select new avatar
         <input id = "avatar" type = 'file' className='d-none' accept = {acceptedFileType} onChange = {onFileTypeChange} />
