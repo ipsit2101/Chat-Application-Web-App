@@ -4,7 +4,7 @@ export function useOpen(defaultVal = false) {          // Hook to manage opening
     const [isOpen, setIsOpen] = useState(defaultVal);
 
     const open = useCallback(() => setIsOpen(true), []);
-    const close = useCallback(() => setIsOpen(true), []);
+    const close = useCallback(() => setIsOpen(false), []);
 
     return {isOpen, open, close};
 

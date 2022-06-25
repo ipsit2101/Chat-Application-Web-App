@@ -5,6 +5,7 @@ import { useOpen } from "../../Misc/CustomHooks";
 import { auth, database } from "../../Misc/firebase";
 import EditableInput from "../EditableInput";
 import AuthProviderInfo from "./AuthProviderInfo";
+import AvtarUpload from "./AvtarUpload";
 
 const Dashboard = () => {
 
@@ -46,6 +47,7 @@ const Dashboard = () => {
           onSave = { onSaveInput }
           label = { <h6 className="mb-2">Nickname</h6> }
         />
+        <AvtarUpload />
       </Drawer.Body>
      
       <Drawer.Footer>

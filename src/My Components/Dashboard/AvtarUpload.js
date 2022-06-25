@@ -1,0 +1,68 @@
+import React, { useState } from 'react'
+import { Alert, Button, Modal } from 'rsuite';
+import { useOpen } from '../../Misc/CustomHooks';
+import AvatarEditor from "react-avatar-editor";
+
+const AvtarUpload = () => {
+  const acceptedFileType = ".png, .jpg, .jpeg";    
+  const assciatedMimeTypes = ['image/png', 'image/jpeg', 'image/pjpeg'];
+  
+  const  [avatarImage, setAvatarImage] = useState(null);
+
+  const isFileValid = (file) => {
+    return assciatedMimeTypes.includes(file.type);
+  }
+
+  const { isOpen, open, close } = useOpen();
+
+  const onFileTypeChange = (event) => {
+    const currFiles = event.target.files;
+
+    if (currFiles.length === 1) {
+        const file = currFiles[0];
+        if (isFileValid(file)) {
+            setAvatarImage(file);
+            open(); // open the preview window
+        }
+        else Alert.warning(`Invalid File Type. Can't upload ${file.type}`, 4000);
+    }
+  }
+
+  return (
+    <div className='mt-3 text-center'>
+      <label htmlFor='avatar' className='d-block cursor-pointer padded'>
+        Select new avatar
+        <input id = "avatar" type = 'file' className='d-none' accept = {acceptedFileType} onChange = {onFileTypeChange} />
+      </label>
+
+      <Modal show = {isOpen} onHide = {close}>
+        <Modal.Header>
+            Adjust and upload new Avatar
+        </Modal.Header>
+        <Modal.Body>
+            {avatarImage && 
+              <div className='d-flex justify-content-center rs-icon-align-center'>
+                <AvatarEditor
+                  image={avatarImage}
+                  borderRadius={10}
+                  width={250}
+                  height={250}
+                  border={50}
+                  color={[255, 255, 255, 0.6]} // RGBA
+                  scale={1.2}
+                  rotate={0}
+                />
+              </div>
+            }
+        </Modal.Body>
+        <Modal.Footer>
+            <Button block appearance='ghost'>
+                Upload New Avatar
+            </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  )
+}
+
+export default AvtarUpload;
