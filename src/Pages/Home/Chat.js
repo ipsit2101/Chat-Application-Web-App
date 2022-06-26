@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router';
 import { Loader } from 'rsuite';
+import { CurrentRoomProvider } from '../../Context/CurrentRoomContext';
 import { useRooms } from '../../Context/RoomsContext';
 import BottomWindow from '../../My Components/Chat-Window/Bottom-Window';
 import MessageWindow from '../../My Components/Chat-Window/Message-Window';
@@ -20,8 +21,14 @@ const Chat = () => {
     return <h6 className='text-center mt-page'>Chat {chatID} not found</h6>
   }
 
+  const { name, description } = currentRoom;     // destructuring name and description from currentRoom
+  const currentRoomData = {
+    name, description
+  }
+
   return (
-    <>
+
+    <CurrentRoomProvider data = {currentRoomData}>
       <div className='chat-top'>
         <TopWindow />
       </div>
@@ -31,7 +38,8 @@ const Chat = () => {
       <div className='chat-bottom'>
         <BottomWindow />
       </div>
-    </>
+    </CurrentRoomProvider>
+
   )
 }
 

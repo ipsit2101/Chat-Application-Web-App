@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, database } from "../Misc/firebase";
 
-const ProfileContext = createContext();    // for creating a new context
+const ProfileContext = createContext(); // for creating a new context
 
 export const ProfileProvider = ( {children} ) => {
     const [profile, setProfile] = useState(null);
