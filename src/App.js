@@ -6,7 +6,7 @@ import "rsuite/dist/styles/rsuite-default.min.css";
 import "./styles/utility.scss";
 import "./styles/main.scss";
 
-import Home from "./Pages/Home";
+import Home from "./Pages/Home/Home";
 import PublicRoute from "./My Components/PublicRoute";
 import { ProfileProvider } from "./Context/profileContext";
 

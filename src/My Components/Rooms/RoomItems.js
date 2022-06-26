@@ -10,7 +10,7 @@ const RoomItems = ( {roomInfo} ) => {
             datetime={new Date(roomInfo.createdAt)}
         />
       </div>
-      <div className='d-flex align-items-center text-black-70'>
+      <div className='d-flex align-items-center text-black-70'>    
         <span>No messages yet</span>   
       </div>
     </div>
