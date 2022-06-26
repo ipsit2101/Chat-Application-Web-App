@@ -40,7 +40,10 @@ const CreateRoomModel = () => {
         }
 
         try {
-            await database.ref('rooms').push(newRoomDetails);
+            //Generates a new child location using a unique key and returns its Reference.
+            //This is the most common pattern for adding data to a collection of items.
+            //If you provide a value to push(), the value is written to the generated location. If you don't pass a value, nothing is written to the database and the child remains empty (but you can use the Reference elsewhere).
+            await database.ref('rooms').push(newRoomDetails);  
             setIsLoading(false);
             setFormData(INITAL_FORM_VALUE);
             close();
