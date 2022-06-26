@@ -15,7 +15,6 @@ const SignIn = () => {
         await database.ref(`/profiles/${user.uid}`).set({       //set method writes the user infornmation to the database location
           name: user.displayName,
           createdAt: firebase.database.ServerValue.TIMESTAMP,
-          avatar: 'user'
         })
       }
       

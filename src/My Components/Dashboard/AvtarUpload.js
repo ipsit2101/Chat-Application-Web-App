@@ -2,11 +2,12 @@ import React, { useRef, useState } from 'react'
 import { Alert, Button, Modal } from 'rsuite';
 import { useOpen } from '../../Misc/CustomHooks';
 import AvatarEditor from "react-avatar-editor";
-import { database, storage } from '../../Misc/firebase';
+import { storage, database } from '../../Misc/firebase';
 import { useProfile } from '../../Context/profileContext';
 import ProfileAvatar from './ProfileAvatar';
 
 const AvtarUpload = () => {
+
   const acceptedFileType = ".png, .jpg, .jpeg";    
   const assciatedMimeTypes = ['image/png', 'image/jpeg', 'image/pjpeg'];
   const { profile } = useProfile();
@@ -59,10 +60,11 @@ const AvtarUpload = () => {
         cacheControl: `public, max-age = ${3600 * 24 * 3}`
       });
 
-      const downloadUrl = (await uploadResult).ref.getDownloadURL();
-      const userAvatarResult = database.ref(`/profiles/${profile.uid}`).child('avatar');
+      const downloadURL = await (await uploadResult).ref.getDownloadURL();
+      console.log("downloadURL", downloadURL);
 
-      await userAvatarResult.set(downloadUrl);
+      const userAvatarRes = database.ref(`/profiles/${profile.uid}`).child('avatar');
+      await userAvatarRes.set(downloadURL);
       
       setIsLoad(false);
       Alert.success(`Avatar has been changed`, 4000);
@@ -75,7 +77,7 @@ const AvtarUpload = () => {
 
   return (
     <div className='mt-3 text-center'>
-      <ProfileAvatar name = {profile.name} src = {profile.avatar} />
+      <ProfileAvatar src = {profile.avatar} name = {profile.name} />
       <label htmlFor='avatar' className='d-block cursor-pointer padded'>
         Select new avatar
         <input id = "avatar" type = 'file' className='d-none' accept = {acceptedFileType} onChange = {onFileTypeChange} />
