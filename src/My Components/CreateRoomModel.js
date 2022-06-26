@@ -44,7 +44,7 @@ const CreateRoomModel = () => {
             setIsLoading(false);
             setFormData(INITAL_FORM_VALUE);
             close();
-            Alert.success('New Room has been created', 4000);
+            Alert.success('New Room has been created', 4000);     
 
         } catch (error) {
             setIsLoading(false);
