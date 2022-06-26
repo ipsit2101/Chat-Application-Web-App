@@ -20,7 +20,7 @@ const Dashboard = () => {
   }, [close]);
        
   const onSaveInput = async (newName) => {           // to save the user's new nickname in the database
-    const newNickName = database.ref(`/profiles/${profile.uid}`).child('hope');
+    const newNickName = database.ref(`/profiles/${profile.uid}`).child('name');
     try {
       await newNickName.set(newName);
       Alert.success('Nickname has been changed', 4000);
