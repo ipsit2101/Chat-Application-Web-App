@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Button, Modal } from 'rsuite';
 import { useCurrentRoom } from '../../../Context/CurrentRoomContext';
 import { useOpen } from '../../../Misc/CustomHooks';
@@ -10,7 +10,7 @@ const RoomDescription = () => {
   const { isOpen, open, close } = useOpen();
 
   return (
-    <div>
+    <>
       <Button appearance = "default" className='px-1' onClick = {open}>
         Room Information
       </Button>
@@ -25,13 +25,13 @@ const RoomDescription = () => {
             <p>{description}</p>
         </Modal.Body>
         <Modal.Footer>
-            <Button block appearance = 'primary' onClick = {close}>
+            <Button block color='green' appearance = 'primary' onClick = {close}>
                 Close
             </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   )
 }
 
-export default RoomDescription;
+export default memo(RoomDescription);

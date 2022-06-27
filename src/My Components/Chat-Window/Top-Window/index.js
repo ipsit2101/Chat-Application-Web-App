@@ -10,9 +10,9 @@ const TopWindow = () => {
   const isMobile = useMediaQuery("(max-width: 992px)");
 
   return (
-    <div>
+    <>
       <div className="d-flex justify-content-between align-items-center">
-        <h4>
+        <h4 className = "text-disappear d-flex align-items-center">
           <Icon
             componentClass={Link}
             to="/"
@@ -20,11 +20,11 @@ const TopWindow = () => {
             size="2x"
             className={
               isMobile
-                ? "d-iniline-block p-0 mr-2 text-blue link-unstyled"
+                ? "d-iniline-block p-0 mr-1 mt-1 text-blue link-unstyled"
                 : "d-none"
             }
           />
-          <span className="text-dissapear">{name}</span>
+          <span className="text-disappear mt-1">{name}</span>
         </h4>
         <ButtonToolbar className="ws-nowrap">todo</ButtonToolbar>
       </div>
@@ -32,7 +32,7 @@ const TopWindow = () => {
         <span>todo</span>
         <RoomDescription />
       </div>
-    </div>
+    </>
   );
 };
 

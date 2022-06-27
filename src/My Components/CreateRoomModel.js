@@ -80,7 +80,7 @@ const CreateRoomModel = () => {
             </Form> 
         </Modal.Body>
         <Modal.Footer>
-            <Button block appearance='primary' onClick={onSubmitForm} disabled = {isLoading}>
+            <Button block appearance='primary' color='green' onClick={onSubmitForm} disabled = {isLoading}>
                 Create New Room
             </Button>
         </Modal.Footer>

@@ -27,8 +27,7 @@ const Chat = () => {
   }
 
   return (
-
-    <CurrentRoomProvider data = {currentRoomData}>
+    <CurrentRoomProvider data = {currentRoomData} >
       <div className='chat-top'>
         <TopWindow />
       </div>
