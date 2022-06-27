@@ -5,6 +5,7 @@ import AvatarEditor from "react-avatar-editor";
 import { storage, database } from '../../Misc/firebase';
 import { useProfile } from '../../Context/profileContext';
 import ProfileAvatar from './ProfileAvatar';
+import { getUserUpdates } from '../../Misc/Helpers';
 
 const AvtarUpload = () => {
 
@@ -61,10 +62,12 @@ const AvtarUpload = () => {
       });
 
       const downloadURL = await (await uploadResult).ref.getDownloadURL();
-      console.log("downloadURL", downloadURL);
+    
+      // const userAvatarRes = database.ref(`/profiles/${profile.uid}`).child('avatar');
+      // await userAvatarRes.set(downloadURL);
 
-      const userAvatarRes = database.ref(`/profiles/${profile.uid}`).child('avatar');
-      await userAvatarRes.set(downloadURL);
+      const updates = await getUserUpdates(profile.uid, 'avatar', downloadURL, database);
+      await database.ref().update(updates);
       
       setIsLoad(false);
       Alert.success(`Avatar has been changed`, 4000);

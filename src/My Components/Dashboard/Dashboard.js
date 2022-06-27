@@ -3,6 +3,7 @@ import { Alert, Button, Divider, Drawer } from "rsuite";
 import { useProfile } from "../../Context/profileContext";
 import { useOpen } from "../../Misc/CustomHooks";
 import { auth, database } from "../../Misc/firebase";
+import { getUserUpdates } from "../../Misc/Helpers";
 import EditableInput from "../EditableInput";
 import AuthProviderInfo from "./AuthProviderInfo";
 import AvtarUpload from "./AvtarUpload";
@@ -20,9 +21,11 @@ const Dashboard = () => {
   }, [close]);
        
   const onSaveInput = async (newName) => {           // to save the user's new nickname in the database
-    const newNickName = database.ref(`/profiles/${profile.uid}`).child('name');
     try {
-      await newNickName.set(newName);
+
+      const updates = await getUserUpdates(profile.uid, 'name', newName, database);
+      await database.ref().update(updates);
+
       Alert.success('Nickname has been changed', 4000);
     } catch (error) {
       Alert.error(error.message, 4000);
