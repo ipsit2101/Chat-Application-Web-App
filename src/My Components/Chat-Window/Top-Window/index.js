@@ -20,11 +20,11 @@ const TopWindow = () => {
             size="2x"
             className={
               isMobile
-                ? "d-iniline-block p-0 mr-1 mt-1 text-blue link-unstyled"
+                ? "d-iniline-block p-2 mr-1 mt-1 text-blue link-unstyled"
                 : "d-none"
             }
           />
-          <span className="text-disappear mt-1">{name}</span>
+          <span className="text-disappear mt-2">{name}</span>
         </h4>
         <ButtonToolbar className="ws-nowrap">todo</ButtonToolbar>
       </div>

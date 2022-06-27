@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <RoomsProvider>
       <Grid fluid className='h-100'>
-        <Row className='h-100'>
+        <Row className='h-100' style={ {overflow: 'hidden'} }>
           { RenderSideBar && 
             <Col xs={24} md={8} className = "h-100">
               <SideBar />
