@@ -77,7 +77,7 @@ const AvtarUpload = () => {
 
   return (
     <div className='mt-3 text-center'>
-      <ProfileAvatar src = {profile.avatar} name = {profile.name} />
+      <ProfileAvatar src = {profile.avatar} name = {profile.name} className = "width-200 height-200 img-fullsize" />
       <label htmlFor='avatar' className='d-block cursor-pointer padded'>
         Select new avatar
         <input id = "avatar" type = 'file' className='d-none' accept = {acceptedFileType} onChange = {onFileTypeChange} />
@@ -89,13 +89,13 @@ const AvtarUpload = () => {
         </Modal.Header>
         <Modal.Body>
             {avatarImage && 
-              <div className='d-flex justify-content-center rs-icon-align-center'>
+              <div className='d-flex justify-content-center rs-icon-align-center font-huge'>
                 <AvatarEditor
                   ref = {avatarRef}
                   image={avatarImage}
                   borderRadius={10}
-                  width={250}
-                  height={250}
+                  width={200}
+                  height={200}
                   border={50}
                   color={[255, 255, 255, 0.6]} // RGBA
                   scale={1.2}
