@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Alert, Button, Divider, Drawer } from "rsuite";
-import { useProfile } from "../../Context/profileContext";
+import { isOfflineForDatabase, useProfile } from "../../Context/profileContext";
 import { useOpen } from "../../Misc/CustomHooks";
 import { auth, database } from "../../Misc/firebase";
 import { getUserUpdates } from "../../Misc/Helpers";
@@ -14,10 +14,15 @@ const Dashboard = () => {
   const { close } = useOpen();
 
   const onSignOut = useCallback(() => {
-    auth.signOut();
-    Alert.info('Signed Out', 4000);
 
-    close();
+    database.ref(`/status/${auth.currentUser.uid}`).set(isOfflineForDatabase).then(() => {
+      auth.signOut();
+      Alert.info('Signed Out', 4000);
+      close();
+    }).catch(error => {
+      Alert.error(error.message, 4000);
+    })
+    
   }, [close]);
        
   const onSaveInput = async (newName) => {           // to save the user's new nickname in the database
