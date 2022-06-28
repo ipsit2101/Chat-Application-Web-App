@@ -49,6 +49,7 @@ const EditRoomInfo = () => {
             />
             <EditableInput 
                 initialVal = {description}
+                label = {<h6 className='mb-2'>Description</h6>}
                 onSave = {onDescriptionSave}
                 componentClass = "textarea"
                 emptyMessage = 'Description can not be empty'

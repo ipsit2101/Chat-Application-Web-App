@@ -7,7 +7,8 @@ import EditRoomInfo from "./EditRoomInfo";
 import RoomDescription from "./RoomDescription";
 
 const TopWindow = () => {
-  const name = useCurrentRoom((val) => val.name);
+  const name = useCurrentRoom(val => val.name);
+  const isAdmin = useCurrentRoom(val => val.isAdmin);
   const isMobile = useMediaQuery("(max-width: 992px)");
 
   return (
@@ -28,7 +29,7 @@ const TopWindow = () => {
           <span className="text-disappear mt-2">{name}</span>
         </h4>
         <ButtonToolbar className="ws-nowrap">
-          <EditRoomInfo />
+          { isAdmin && <EditRoomInfo /> /* EditRoomOption is made available only to those users who are Admins */}
         </ButtonToolbar>
       </div>
       <div className="d-flex justify-content-between align-items-center">

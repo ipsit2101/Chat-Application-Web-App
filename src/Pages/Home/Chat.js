@@ -3,6 +3,8 @@ import { useParams } from 'react-router';
 import { Loader } from 'rsuite';
 import { CurrentRoomProvider } from '../../Context/CurrentRoomContext';
 import { useRooms } from '../../Context/RoomsContext';
+import { auth } from '../../Misc/firebase';
+import { TransformObjectToArray } from '../../Misc/Helpers';
 import BottomWindow from '../../My Components/Chat-Window/Bottom-Window';
 import MessageWindow from '../../My Components/Chat-Window/Message-Window';
 import TopWindow from '../../My Components/Chat-Window/Top-Window';
@@ -22,8 +24,12 @@ const Chat = () => {
   }
 
   const { name, description } = currentRoom;     // destructuring name and description from currentRoom
+  const admins = TransformObjectToArray(currentRoom.admins);
+  const isAdmin = admins.includes(auth.currentUser.uid);
+
   const currentRoomData = {
-    name, description
+    name, description,
+    admins, isAdmin
   }
 
   return (

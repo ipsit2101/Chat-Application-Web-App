@@ -28,6 +28,7 @@ export const ProfileProvider = ( {children} ) => {
             if (authObject) {
                 userRef = database.ref(`/profiles/${authObject.uid}`);
                 userStatusDatabaseRef = database.ref(`/status/${authObject.uid}`);
+                console.log('profile id: ', authObject.uid);
 
                 userRef.on('value', (snapshot) => {
                     console.log(snapshot.val());
