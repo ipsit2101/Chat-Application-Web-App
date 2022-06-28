@@ -1,19 +1,34 @@
-import React from "react";
+import React, { memo } from "react";
+import { Button } from "rsuite";
 import TimeAgo from "timeago-react";
+import { useCurrentRoom } from "../../../Context/CurrentRoomContext";
+import { auth } from "../../../Misc/firebase";
 import ProfileAvatar from "../../Dashboard/ProfileAvatar";
 import PresenceDot from "../../PresenceDot";
 import UserProfileInfo from "./UserProfileInfo";
 
-const MessageItem = ( {message} ) => {
+const MessageItem = ( {message, handleAdminPerm} ) => {
 
-    const { author, createdAt, text } = message;
+  const { author, createdAt, text } = message;
+  const isAdmin = useCurrentRoom(val => val.isAdmin);
+  const admins = useCurrentRoom(val => val.admins);
+
+  const isAuthorAdmin = admins.includes(author.uid);
+  const isAuthor = auth.currentUser.uid === author.uid;
+  const canGrantAdmin = isAdmin && !isAuthor;
    
   return (
-    <li className="padded mb-1">
+    <li className="padded mb-1">    
         <div className="d-flex align-items-center font-bolder mb-1">
             <PresenceDot uid = {author.uid} />
             <ProfileAvatar src = {author.avatar} name = {author.name} className = "ml-1" size = "xs" />
-            <UserProfileInfo author = {author} />
+            <UserProfileInfo author = {author}>
+  
+              { canGrantAdmin && <Button block color="red" onClick = {() => handleAdminPerm(author.uid)}>
+                { isAuthorAdmin ? 'Remove Admin Permission' : 'Grant Admin Permission' }
+              </Button>}
+
+            </UserProfileInfo>
             <TimeAgo datetime = {createdAt} className = "font-normal text-black-45 ml-2" />
         </div>
         <div>
@@ -23,4 +38,4 @@ const MessageItem = ( {message} ) => {
   )
 }
 
-export default MessageItem;
+export default memo(MessageItem);

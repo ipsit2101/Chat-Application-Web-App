@@ -3,7 +3,7 @@ import { Button, Modal } from 'rsuite';
 import { useOpen } from '../../../Misc/CustomHooks';
 import ProfileAvatar from '../../Dashboard/ProfileAvatar';
 
-const UserProfileInfo = ( {author} ) => {
+const UserProfileInfo = ( {author, children} ) => {
 
   const { isOpen, open, close } = useOpen();
   const shortName = author.name.split(' ')[0];
@@ -27,6 +27,7 @@ const UserProfileInfo = ( {author} ) => {
             <p>Member since {memberSince}</p>
         </Modal.Body>
         <Modal.Footer>
+            {children} 
             <Button block color='green' appearance = 'primary' onClick = {close}>
                 Close
             </Button>
