@@ -1,4 +1,5 @@
 import { useCallback, useState, useEffect } from "react";
+import { database } from "./firebase";
 
 export function useOpen(defaultVal = false) {          // Hook to manage opening and closing dashboards
     const [isOpen, setIsOpen] = useState(defaultVal);
@@ -27,4 +28,31 @@ export const useMediaQuery = (query) => {
   
     return matches;
   };
+
+  // getting user presence in chat window
+  export function useUserPresence(uid) {
+
+    const [presence, setPresence] = useState(null);
+
+    useEffect(() => {
+      const userStatusRef = database.ref(`/status/${uid}`);
+
+      userStatusRef.on('value', (snapshot) => {
+
+        //exists() returns true if this DataSnapshot contains any data. It is slightly more efficient than using snapshot.val() !== null.
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          setPresence(data);
+        }
+      });
+
+      return () => {
+        userStatusRef.off();
+      }
+
+    }, [uid]);
+
+    return presence;
+    
+  } 
   
