@@ -80,7 +80,7 @@ const AvtarUpload = () => {
 
   return (
     <div className='mt-3 text-center'>
-      <ProfileAvatar src = {profile.avatar} name = {profile.name} className = "width-200 height-200 img-fullsize" />
+      <ProfileAvatar src = {profile.avatar} name = {profile.name} className = "width-200 height-200 img-fullsize font-huge" />
       <label htmlFor='avatar' className='d-block cursor-pointer padded'>
         Select new avatar
         <input id = "avatar" type = 'file' className='d-none' accept = {acceptedFileType} onChange = {onFileTypeChange} />
