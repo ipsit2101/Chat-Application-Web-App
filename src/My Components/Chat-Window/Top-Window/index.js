@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ButtonToolbar, Icon } from "rsuite";
 import { useCurrentRoom } from "../../../Context/CurrentRoomContext";
 import { useMediaQuery } from "../../../Misc/CustomHooks";
+import EditRoomInfo from "./EditRoomInfo";
 import RoomDescription from "./RoomDescription";
 
 const TopWindow = () => {
@@ -19,14 +20,16 @@ const TopWindow = () => {
             icon="arrow-circle-left"
             size="2x"
             className={
-              isMobile
+              isMobile        
                 ? "d-iniline-block p-2 mr-1 mt-1 text-blue link-unstyled"
                 : "d-none"
             }
           />
           <span className="text-disappear mt-2">{name}</span>
         </h4>
-        <ButtonToolbar className="ws-nowrap">todo</ButtonToolbar>
+        <ButtonToolbar className="ws-nowrap">
+          <EditRoomInfo />
+        </ButtonToolbar>
       </div>
       <div className="d-flex justify-content-between align-items-center">
         <span>todo</span>

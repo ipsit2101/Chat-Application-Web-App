@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Alert, Icon, Input, InputGroup } from "rsuite";
 
-const EditableInput = ({initialVal, onSave, label = null, placeholder = "write your value", emptyMessage = "Input is empty", ...inputProps}) => {
+const EditableInput = ({wrapperClass, initialVal, onSave, label = null, placeholder = "write your value", emptyMessage = "Input is empty", ...inputProps}) => {
   const [input, setInput] = useState(initialVal);
   const [isEditable, setIsEditable] = useState(false); // hook to make the texts editable
 
@@ -28,7 +28,7 @@ const EditableInput = ({initialVal, onSave, label = null, placeholder = "write y
   }
 
   return (
-    <div>
+    <div className = {wrapperClass} >
       {label}
       <InputGroup>
         <Input {...inputProps} placeholder = {placeholder} onChange = {onInputChange} value = {input} disabled = {!isEditable} />
