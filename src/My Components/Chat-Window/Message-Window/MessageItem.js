@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { Button } from "rsuite";
 import TimeAgo from "timeago-react";
 import { useCurrentRoom } from "../../../Context/CurrentRoomContext";
+import { useHover } from "../../../Misc/CustomHooks";
 import { auth } from "../../../Misc/firebase";
 import ProfileAvatar from "../../Dashboard/ProfileAvatar";
 import PresenceDot from "../../PresenceDot";
@@ -16,9 +17,11 @@ const MessageItem = ( {message, handleAdminPerm} ) => {
   const isAuthorAdmin = admins.includes(author.uid);
   const isAuthor = auth.currentUser.uid === author.uid;
   const canGrantAdmin = isAdmin && !isAuthor;
+
+  const [hover, isHovered] = useHover();
    
   return (
-    <li className="padded mb-1">    
+    <li className={`padded mb-1 cursor-pointer ${isHovered ? 'bg-black-02' : ''}`}  ref = {hover}>    
         <div className="d-flex align-items-center font-bolder mb-1">
             <PresenceDot uid = {author.uid} />
             <ProfileAvatar src = {author.avatar} name = {author.name} className = "ml-1" size = "xs" />
