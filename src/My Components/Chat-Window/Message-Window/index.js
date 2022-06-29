@@ -21,6 +21,7 @@ const MessageWindow = () => {
       .on("value", (snapshot) => {
         const data = TransformToArray(snapshot.val());
         setMessage(data);
+        console.log('Messages', message);
       });
 
     return () => {
@@ -80,6 +81,35 @@ const MessageWindow = () => {
 
   }, []);
 
+  const MessageDeleteHandler = useCallback(async (msgId) => {
+
+    if (!window.confirm('Delete this message')) {
+      return;
+    }
+
+    const isLast = message[message.length-1].id === msgId;  // checks if the message that the current user deletes is the last message
+    const updates = {};
+    updates[`/messages/${msgId}`] =null;
+
+    if (isLast && message.length > 1) {
+      updates[`/rooms/${chatID}/lastMessage`] = {
+        ...message[message.length-2],
+        msgId: message[message.length-2].id        
+      }
+    }
+    if (isLast && message.length === 1) {
+      updates[`/rooms/${chatID}/lastMessage`] = null;
+    }
+
+    try {
+      await database.ref().update(updates);
+      Alert.info('Message is deleted', 4000);
+    } catch (error) {
+      Alert.error(error.message, 4000);
+    }
+  
+  }, [chatID, message]);
+
   return (
     <ul className="msg-list custom-scroll">
       {isChatEmpty && <li>No messages yet</li>}
@@ -90,6 +120,7 @@ const MessageWindow = () => {
             message={msg}
             handleAdminPerm={handleAdminPerm}
             MessageLikeHandler = {MessageLikeHandler}
+            MessageDeleteHandler = {MessageDeleteHandler}
           />
         ))}
     </ul>

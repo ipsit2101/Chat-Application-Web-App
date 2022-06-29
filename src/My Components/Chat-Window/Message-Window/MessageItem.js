@@ -9,7 +9,7 @@ import PresenceDot from "../../PresenceDot";
 import MessageIconControl from "./MessageIconControl";
 import UserProfileInfo from "./UserProfileInfo";
 
-const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler} ) => {
+const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler, MessageDeleteHandler} ) => {
 
   const { author, createdAt, text, likes, likeCount } = message;
   const isAdmin = useCurrentRoom(val => val.isAdmin);
@@ -45,6 +45,15 @@ const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler} ) => {
               onClick = {() => MessageLikeHandler(message.id)}
               badgeContent = {likeCount}
             />
+            { isAuthor &&        // Only auhor can delete this message
+              <MessageIconControl 
+                //color = {isLiked ? "red" : ""}
+                isVisible = {canShowMessageIcon}
+                iconName = "close"   
+                tooltip = "Delete this message"
+                onClick = {() => MessageDeleteHandler(message.id)}
+              />
+            }
         </div>
         <div>
             <span className="word-breal-all">{text}</span>

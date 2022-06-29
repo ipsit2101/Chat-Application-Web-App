@@ -16,7 +16,7 @@ const EditRoomInfo = () => {
 
   const updateData = (key, value) => {
     database.ref(`/rooms/${chatID}`).child(key).set(value).then(() => {
-        Alert.info('Successfully updated', 4000);
+        Alert.success('Successfully updated', 4000);
     }).catch(error => {
         Alert.error(error.message, 4000);
     });
