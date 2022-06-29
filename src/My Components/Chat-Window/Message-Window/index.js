@@ -27,7 +27,7 @@ const MessageWindow = () => {
     return () => {
       messageRef.off("value");
     };
-  }, [chatID]);
+  }, [chatID, message]);
 
   const handleAdminPerm = useCallback(
     async (uid) => {

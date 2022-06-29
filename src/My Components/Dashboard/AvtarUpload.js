@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Alert, Button, Modal } from 'rsuite';
+import { Alert, Button, Loader, Modal } from 'rsuite';
 import { useOpen } from '../../Misc/CustomHooks';
 import AvatarEditor from "react-avatar-editor";
 import { storage, database } from '../../Misc/firebase';
@@ -65,7 +65,6 @@ const AvtarUpload = () => {
     
       // const userAvatarRes = database.ref(`/profiles/${profile.uid}`).child('avatar');
       // await userAvatarRes.set(downloadURL);
-
       const updates = await getUserUpdates(profile.uid, 'avatar', downloadURL, database);
       await database.ref().update(updates);
       
@@ -108,6 +107,7 @@ const AvtarUpload = () => {
             }
         </Modal.Body>
         <Modal.Footer>
+            { isLoad && <Loader center vertical content = "Loading" speed = "slow" size = "md" /> }
             <Button block appearance='ghost' onClick = {uploadAvatar} disabled = {isLoad}>
                 Upload New Avatar
             </Button>

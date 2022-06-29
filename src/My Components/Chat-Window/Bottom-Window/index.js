@@ -4,6 +4,7 @@ import firebase from 'firebase/app';
 import { useProfile } from '../../../Context/profileContext';
 import { useParams } from 'react-router';
 import { database } from '../../../Misc/firebase';
+import Attachments from './Attachments';
 
 function assembleMessage(profile, chatID) {
   return {
@@ -70,16 +71,34 @@ const BottomWindow = () => {
       onSendClick();  
     }
   }
+  
+  const afterUpload = useCallback((files) => {
+    setIsLoading(true);
+
+    const updates = {};
+    files.forEach(file => {
+
+      const MessageData = assembleMessage(profile, chatID);
+      MessageData.text = input;
+      
+      const messageId = database.ref('messages').push().key;
+      //updating update object
+      updates[`/messages/${messageId}`] = MessageData;
+
+    })
+
+  }, []);
 
   return (
-    <div>
+    <>
       <InputGroup>
+        <Attachments afterUpload = {afterUpload} />
         <Input placeholder = "Write a new message here..." value = {input} onChange = {onInputChange} />
         <InputGroup.Button color='green' appearance='primary' onClick = {onSendClick} onKeyDown = {onKeyDown} disabled = {isLoading}>
           <Icon icon = "send" />
         </InputGroup.Button>
       </InputGroup>
-    </div>
+    </>
   )
 }
 
