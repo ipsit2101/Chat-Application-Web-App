@@ -6,6 +6,7 @@ import { useHover } from "../../../Misc/CustomHooks";
 import { auth } from "../../../Misc/firebase";
 import ProfileAvatar from "../../Dashboard/ProfileAvatar";
 import PresenceDot from "../../PresenceDot";
+import MessageIconControl from "./MessageIconControl";
 import UserProfileInfo from "./UserProfileInfo";
 
 const MessageItem = ( {message, handleAdminPerm} ) => {
@@ -33,6 +34,14 @@ const MessageItem = ( {message, handleAdminPerm} ) => {
 
             </UserProfileInfo>
             <TimeAgo datetime = {createdAt} className = "font-normal text-black-45 ml-2" />
+            <MessageIconControl 
+              isVisible
+              iconName = "heart"
+              color = "red"
+              tooltip = "Like this message"
+              onClick = {() => {}}
+              badgeContent = {5}
+            />
         </div>
         <div>
             <span className="word-breal-all">{text}</span>
