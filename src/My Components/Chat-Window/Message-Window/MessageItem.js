@@ -2,24 +2,27 @@ import React, { memo } from "react";
 import { Button } from "rsuite";
 import TimeAgo from "timeago-react";
 import { useCurrentRoom } from "../../../Context/CurrentRoomContext";
-import { useHover } from "../../../Misc/CustomHooks";
+import { useHover, useMediaQuery } from "../../../Misc/CustomHooks";
 import { auth } from "../../../Misc/firebase";
 import ProfileAvatar from "../../Dashboard/ProfileAvatar";
 import PresenceDot from "../../PresenceDot";
 import MessageIconControl from "./MessageIconControl";
 import UserProfileInfo from "./UserProfileInfo";
 
-const MessageItem = ( {message, handleAdminPerm} ) => {
+const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler} ) => {
 
-  const { author, createdAt, text } = message;
+  const { author, createdAt, text, likes, likeCount } = message;
   const isAdmin = useCurrentRoom(val => val.isAdmin);
   const admins = useCurrentRoom(val => val.admins);
-
+     
   const isAuthorAdmin = admins.includes(author.uid);
   const isAuthor = auth.currentUser.uid === author.uid;
   const canGrantAdmin = isAdmin && !isAuthor;
 
   const [hover, isHovered] = useHover();
+  const isLiked = likes && Object.keys(likes).includes(auth.currentUser.uid);   // boolean to check if current signed-in user has liked the message
+  const isMobile = useMediaQuery('(max-width: 992px)');
+  const canShowMessageIcon = isMobile || isHovered;
    
   return (
     <li className={`padded mb-1 cursor-pointer ${isHovered ? 'bg-black-02' : ''}`}  ref = {hover}>    
@@ -30,17 +33,17 @@ const MessageItem = ( {message, handleAdminPerm} ) => {
   
               { canGrantAdmin && <Button block color="red" onClick = {() => handleAdminPerm(author.uid)}>
                 { isAuthorAdmin ? 'Remove Admin Permission' : 'Grant Admin Permission' }
-              </Button>}
+              </Button>} 
 
             </UserProfileInfo>
             <TimeAgo datetime = {createdAt} className = "font-normal text-black-45 ml-2" />
             <MessageIconControl 
-              isVisible
-              iconName = "heart"
-              color = "red"
+              color = {isLiked ? "red" : ""}
+              isVisible = {canShowMessageIcon}
+              iconName = "heart"   
               tooltip = "Like this message"
-              onClick = {() => {}}
-              badgeContent = {5}
+              onClick = {() => MessageLikeHandler(message.id)}
+              badgeContent = {likeCount}
             />
         </div>
         <div>

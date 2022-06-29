@@ -14,11 +14,13 @@ function assembleMessage(profile, chatID) {
       createdAt: profile.createdAt,
       ...(profile.avatar ? {avatar: profile.avatar} : {})
     },
-    createdAt: firebase.database.ServerValue.TIMESTAMP
+    createdAt: firebase.database.ServerValue.TIMESTAMP,
+    likeCount: 0
   }
 }  
 
 const BottomWindow = () => {
+
   const [input, setInput] = useState('');   
   const { profile } = useProfile();
   const { chatID } = useParams();
@@ -65,7 +67,7 @@ const BottomWindow = () => {
   const onKeyDown = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
-      onSendClick();
+      onSendClick();  
     }
   }
 
