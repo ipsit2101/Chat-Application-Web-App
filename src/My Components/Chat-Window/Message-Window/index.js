@@ -1,33 +1,57 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
-import { Alert } from "rsuite";
+import { Alert, Button } from "rsuite";
 import { auth, database, storage } from "../../../Misc/firebase";
 import { groupBy, TransformToArray } from "../../../Misc/Helpers";
 import MessageItem from "./MessageItem";
 
-const MessageWindow = () => {
-  const { chatID } = useParams();
+const PAGE_SIZE = 8;
+const messageRef = database.ref("/messages");
+
+const MessageWindow = () => {   
+  const { chatID } = useParams();    
   const [message, setMessage] = useState(null);
+  const [limit, setLimit] = useState(PAGE_SIZE); 
+
+  const selfRef = useRef();   // to make sure that we're scrolled to the very bottom while loading messages
 
   const isChatEmpty = message && message.length === 0;
   const canShowMessage = message && message.length > 0;
   let alertMsg = "";
 
-  useEffect(() => {
-    const messageRef = database.ref("/messages");
-    messageRef
-      .orderByChild("roomId")
-      .equalTo(chatID)
-      .on("value", (snapshot) => {
-        const data = TransformToArray(snapshot.val());
-        setMessage(data);
-        //console.log('Messages', message);
-      });
+  const loadMessages = useCallback((limitToLast) => {
+
+    messageRef.off();
+
+    messageRef.orderByChild("roomId").equalTo(chatID).limitToLast(limitToLast || PAGE_SIZE).on("value", (snapshot) => {
+      const data = TransformToArray(snapshot.val());
+      setMessage(data);
+      //console.log('Messages', message);
+    });
+
+    setLimit(prevLim => prevLim + PAGE_SIZE);
+
+  }, [chatID]);
+
+  const onLoadMoreMessages = useCallback(() => {
+
+    loadMessages(limit);
+
+  }, [loadMessages, limit]);      
+    
+  useEffect(() => {                       
+
+    const node = selfRef.current;
+    loadMessages();  // When we load our messages initially
+
+    setTimeout(() => {
+      node.scrollTop = node.scrollHeight  // to make sure that we're scrolled to the very bottom while loading messages
+    }, 1000);
 
     return () => {
       messageRef.off("value");
     };
-  }, [chatID, message]);
+  }, [loadMessages]);
 
   const handleAdminPerm = useCallback(
     async (uid) => {
@@ -151,7 +175,12 @@ const MessageWindow = () => {
   }
 
   return (
-    <ul className="msg-list custom-scroll">
+    <ul ref = {selfRef} className="msg-list custom-scroll">
+      {message && message.length >= PAGE_SIZE && 
+        <li className="text-center mt-2 mb-2">
+          <Button color="green" onClick = {onLoadMoreMessages}>Load More</Button>
+        </li>
+      }
       {isChatEmpty && <li>No messages yet</li>}
       {canShowMessage && RenderMessages()}
     </ul>
