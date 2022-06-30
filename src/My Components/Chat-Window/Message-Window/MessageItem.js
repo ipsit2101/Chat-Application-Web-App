@@ -32,6 +32,15 @@ const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler, MessageDele
         <div className="height-220">
           <RenderImage src = {file.url} name = {file.name} />
         </div>
+      )   
+    }
+    
+    if (file.contentType.includes('audio')) {
+      return (
+        <audio controls>
+          <source src = {file.url} type = "audio/mp3" />
+          wrfvnwlvnwflv
+        </audio>
       )
     }
 
@@ -65,9 +74,9 @@ const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler, MessageDele
               <MessageIconControl 
                 //color = {isLiked ? "red" : ""}
                 isVisible = {canShowMessageIcon}
-                iconName = "close"   
+                iconName = "close"       
                 tooltip = "Delete this message"
-                onClick = {() => MessageDeleteHandler(message.id)}
+                onClick = {() => MessageDeleteHandler(message.id, file)}
               />  
             }
         </div>
