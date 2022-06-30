@@ -58,7 +58,7 @@ const BottomWindow = () => {
         await database.ref().update(updates);
         setInput('');
         setIsLoading(false);
-      } catch (error) {
+      } catch (error) {   
 
         setIsLoading(false);
         Alert.error(error.message, 4000);
@@ -72,22 +72,37 @@ const BottomWindow = () => {
     }
   }
   
-  const afterUpload = useCallback((files) => {
+  const afterUpload = useCallback(async (files) => {
     setIsLoading(true);
 
     const updates = {};
     files.forEach(file => {
 
       const MessageData = assembleMessage(profile, chatID);
-      MessageData.text = input;
+      MessageData.file = file;
       
       const messageId = database.ref('messages').push().key;
       //updating update object
       updates[`/messages/${messageId}`] = MessageData;
 
-    })
+    });
 
-  }, []);
+    const lastMessageId = Object.keys(updates).pop();
+    updates[`/rooms/${chatID}/lastMessage`] = {
+      ...updates[lastMessageId],  
+      msgId: lastMessageId
+    }
+      
+    //updating the database
+    try {
+      await database.ref().update(updates);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      Alert.error(error.message, 4000);   
+    }
+
+  }, [chatID, profile]);
 
   return (
     <>
