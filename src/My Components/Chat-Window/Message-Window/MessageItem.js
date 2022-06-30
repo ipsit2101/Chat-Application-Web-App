@@ -7,11 +7,12 @@ import { auth } from "../../../Misc/firebase";
 import ProfileAvatar from "../../Dashboard/ProfileAvatar";
 import PresenceDot from "../../PresenceDot";
 import MessageIconControl from "./MessageIconControl";
+import RenderImage from "./RenderImage";
 import UserProfileInfo from "./UserProfileInfo";
 
 const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler, MessageDeleteHandler} ) => {
 
-  const { author, createdAt, text, likes, likeCount } = message;
+  const { author, createdAt, text, likes, file, likeCount } = message;
   const isAdmin = useCurrentRoom(val => val.isAdmin);
   const admins = useCurrentRoom(val => val.admins);
      
@@ -23,6 +24,21 @@ const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler, MessageDele
   const isLiked = likes && Object.keys(likes).includes(auth.currentUser.uid);   // boolean to check if current signed-in user has liked the message
   const isMobile = useMediaQuery('(max-width: 992px)');
   const canShowMessageIcon = isMobile || isHovered;
+
+  const RenderFile = (file) => {
+    
+    if (file.contentType.includes('image')) {
+      return (
+        <div className="height-220">
+          <RenderImage src = {file.url} name = {file.name} />
+        </div>
+      )
+    }
+
+    return (
+      <a href = {file.url}>Download {file.name}</a>
+    )
+  }
    
   return (
     <li className={`padded mb-1 cursor-pointer ${isHovered ? 'bg-black-02' : ''}`}  ref = {hover}>    
@@ -52,11 +68,12 @@ const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler, MessageDele
                 iconName = "close"   
                 tooltip = "Delete this message"
                 onClick = {() => MessageDeleteHandler(message.id)}
-              />
+              />  
             }
         </div>
         <div>
-            <span className="word-breal-all">{text}</span>
+            {text && <span className="word-breal-all">{text}</span>}
+            {file && RenderFile(file)}
         </div>
     </li>
   )
