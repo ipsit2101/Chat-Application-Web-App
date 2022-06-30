@@ -40,5 +40,19 @@ export async function getUserUpdates(userId, keyUpdate, value, db) {
 // transforming Object to an Array
 export function TransformObjectToArray(snapVal) {
 
-    return snapVal ? Object.keys(snapVal) : [];
+    return snapVal ? Object.keys(snapVal) : [];   
+}     
+
+export function groupBy(array, groupingKeyFunc) {
+    return array.reduce((result, item) => {    // The reduce method calls the call-back function one time for each element in the array.
+        const groupingKey = groupingKeyFunc(item);
+
+        if (!result[groupingKey]) {
+           result[groupingKey] = [];
+        }
+
+        result[groupingKey].push(item);
+        return result;
+
+    }, {})  
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router';
-import { Alert, Button, Icon, InputGroup, Modal, Uploader } from 'rsuite';
+import { Alert, Button, Icon, InputGroup, Loader, Modal, Uploader } from 'rsuite';
 import { useOpen } from '../../../Misc/CustomHooks';
 import { storage } from '../../../Misc/firebase';
 
@@ -53,6 +53,7 @@ const Attachments = ( {afterUpload} ) => {
 
   return (  
     <>
+      { isLoading && <Loader vertical content = "Uploading" speed = "slow" size = "md" /> }
       <InputGroup.Button onClick = {open}>
         <Icon icon = "attachment" />  
       </InputGroup.Button>

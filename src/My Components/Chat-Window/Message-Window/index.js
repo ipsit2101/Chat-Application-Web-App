@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Alert } from "rsuite";
 import { auth, database, storage } from "../../../Misc/firebase";
-import { TransformToArray } from "../../../Misc/Helpers";
+import { groupBy, TransformToArray } from "../../../Misc/Helpers";
 import MessageItem from "./MessageItem";
 
 const MessageWindow = () => {
@@ -21,7 +21,7 @@ const MessageWindow = () => {
       .on("value", (snapshot) => {
         const data = TransformToArray(snapshot.val());
         setMessage(data);
-        console.log('Messages', message);
+        //console.log('Messages', message);
       });
 
     return () => {
@@ -121,19 +121,39 @@ const MessageWindow = () => {
   
   }, [chatID, message]);
 
-  return (
-    <ul className="msg-list custom-scroll">
-      {isChatEmpty && <li>No messages yet</li>}
-      {canShowMessage &&
-        message.map((msg) => (
-          <MessageItem
+  const RenderMessages = () => {        // Renders messages in message window
+
+    const group = groupBy(message, (item) => new Date(item.createdAt).toDateString());
+
+    const items = [];
+    Object.keys(group).forEach((date) => {
+
+      items.push(
+        <li key = {date} className="text-center mb-1 padded">{date}</li>
+      )
+      const messageArrays = group[date].map(msg => {
+        return (
+          <MessageItem    
             key={msg.id}
             message={msg}
             handleAdminPerm={handleAdminPerm}
             MessageLikeHandler = {MessageLikeHandler}
             MessageDeleteHandler = {MessageDeleteHandler}
           />
-        ))}
+        )
+      });
+
+      items.push(...messageArrays);
+
+    });
+
+    return items;
+  }
+
+  return (
+    <ul className="msg-list custom-scroll">
+      {isChatEmpty && <li>No messages yet</li>}
+      {canShowMessage && RenderMessages()}
     </ul>
   );
 };
