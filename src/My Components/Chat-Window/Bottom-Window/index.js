@@ -5,6 +5,7 @@ import { useProfile } from '../../../Context/profileContext';
 import { useParams } from 'react-router';
 import { database } from '../../../Misc/firebase';
 import Attachments from './Attachments';
+import RecordAudio from './RecordAudio';
 
 function assembleMessage(profile, chatID) {
   return {
@@ -105,9 +106,10 @@ const BottomWindow = () => {
   }, [chatID, profile]);
 
   return (
-    <>
+    <>   
       <InputGroup>
         <Attachments afterUpload = {afterUpload} />
+        <RecordAudio afterUpload = {afterUpload} />
         <Input placeholder = "Write a new message here..." value = {input} onChange = {onInputChange} />
         <InputGroup.Button color='green' appearance='primary' onClick = {onSendClick} onKeyDown = {onKeyDown} disabled = {isLoading}>
           <Icon icon = "send" />
