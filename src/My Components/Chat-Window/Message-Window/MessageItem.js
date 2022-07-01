@@ -39,7 +39,6 @@ const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler, MessageDele
       return (
         <audio controls>
           <source src = {file.url} type = "audio/mp3" />
-          wrfvnwlvnwflv
         </audio>
       )
     }
@@ -50,6 +49,7 @@ const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler, MessageDele
   }
    
   return (
+    
     <li className={`padded mb-1 cursor-pointer ${isHovered ? 'bg-black-02' : ''}`}  ref = {hover}>    
         <div className="d-flex align-items-center font-bolder mb-1">
             <PresenceDot uid = {author.uid} />
@@ -81,10 +81,11 @@ const MessageItem = ( {message, handleAdminPerm, MessageLikeHandler, MessageDele
             }
         </div>
         <div>
-            {text && <span className="word-breal-all">{text}</span>}
+            {text && <span className="word-break-all">{text}</span>}
             {file && RenderFile(file)}
         </div>
     </li>
+    
   )
 }
 

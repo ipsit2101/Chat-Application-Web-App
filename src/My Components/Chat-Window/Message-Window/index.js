@@ -8,6 +8,11 @@ import MessageItem from "./MessageItem";
 const PAGE_SIZE = 8;
 const messageRef = database.ref("/messages");
 
+function shouldScrollToBottom(node, threshold = 5) {
+  const percentage = (100 * node.scrollTop) / (node.scrollHeight - node.clientHeight) || 0;
+  return percentage >= threshold;
+}
+
 const MessageWindow = () => {   
   const { chatID } = useParams();    
   const [message, setMessage] = useState(null);
@@ -27,15 +32,27 @@ const MessageWindow = () => {
       const data = TransformToArray(snapshot.val());
       setMessage(data);
       //console.log('Messages', message);
+
+      const node = selfRef.current;
+      if (shouldScrollToBottom(node)) {
+        node.scrollTop = node.scrollHeight;
+      }
     });
 
     setLimit(prevLim => prevLim + PAGE_SIZE);
-
+   
   }, [chatID]);
 
   const onLoadMoreMessages = useCallback(() => {
+    const node = selfRef.current;
+    const oldHeight = node.scrollHeight;
 
     loadMessages(limit);
+
+    setTimeout(() => {
+      const newHeight = node.scrollHeight;
+      node.scrollTop = newHeight - oldHeight;
+    }, 1000)
 
   }, [loadMessages, limit]);      
     
