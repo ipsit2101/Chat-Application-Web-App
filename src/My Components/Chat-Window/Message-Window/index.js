@@ -22,7 +22,6 @@ const MessageWindow = () => {
 
   const isChatEmpty = message && message.length === 0;
   const canShowMessage = message && message.length > 0;
-  let alertMsg = "";
 
   const loadMessages = useCallback((limitToLast) => {
 
@@ -72,18 +71,20 @@ const MessageWindow = () => {
 
   const handleAdminPerm = useCallback(
     async (uid) => {
+
+      let alertMsg = "";
       const adminsRef = database.ref(`/rooms/${chatID}/admins`);
       await adminsRef.transaction((admins) => {
         if (admins) {
           if (admins[uid]) {
             admins[uid] = null;
-            // eslint-disable-next-line react-hooks/exhaustive-deps
             alertMsg = "Admin permission removed";
           }
-        } else {
-          admins[uid] = true;
-          alertMsg = "Admin permission granted";
-        }
+          else {
+            admins[uid] = true;
+            alertMsg = "Admin permission granted";
+          }
+        } 
 
         return admins;
       });
@@ -95,6 +96,7 @@ const MessageWindow = () => {
 
   const MessageLikeHandler = useCallback( async (msgId) => {
 
+    let alertMsg = "";
     const { uid } = auth.currentUser;
     const messageRef = database.ref(`/messages/${msgId}`);
       await messageRef.transaction((msg) => {
@@ -102,7 +104,6 @@ const MessageWindow = () => {
           if (msg.likes && msg.likes[uid]) {
             msg.likeCount--;
             msg.likes[uid] = null;
-            // eslint-disable-next-line react-hooks/exhaustive-deps
             alertMsg = "Like removed";
           }
           else {
